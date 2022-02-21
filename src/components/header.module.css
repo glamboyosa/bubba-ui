@@ -1,0 +1,10 @@
+.header {
+  text-align: center;
+  border-bottom: 0.4px solid var(--white);
+}
+.heading {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-size: 5rem;
+  font-family: "Josefin Sans", sans-serif;
+}
