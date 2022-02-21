@@ -6,7 +6,7 @@ import ColumnItem from "./components/ColumnItem";
 type TWord = {
   solved: boolean;
   attempts: number;
-  data: { letter: string; class: string }[];
+  data: { letter: string; bg: string }[];
 };
 function App() {
   const [rows] = useState(Array.from("clothe"));
