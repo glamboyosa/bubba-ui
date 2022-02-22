@@ -19,7 +19,6 @@ function App() {
   const [start, setStart] = useState(false)
   const [solved, setSolved] = useState(false)
   let { current: currentRow } = useRef(1)
-
   const {
     start: startStopwatch,
     stop,
@@ -36,7 +35,7 @@ function App() {
         .join('')
         .toLowerCase()
       const body = JSON.stringify({ answer: word, attempts: currentRow })
-      const response = await fetch('http://localhost:4000/api/attempts', {
+      const response = await fetch(process.env.NODE_ENV === "development" ? 'http://localhost:4000/api/attempts' : 'https://polished-flower-743.fly.dev', {
         body: body,
         method: 'POST',
         headers: {
