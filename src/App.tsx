@@ -3,6 +3,8 @@ import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { StopWatch, useStopwatch } from '@glamboyosa/react-stopwatch'
 import '@glamboyosa/react-stopwatch/dist/index.css'
+import { useWindowSize } from 'react-use'
+import Confetti from 'react-confetti'
 import './App.css'
 import Header from './components/Header'
 import ColumnItem from './components/ColumnItem'
@@ -15,12 +17,15 @@ function App() {
   const [rows] = useState(Array.from('clothe'))
   const [columns] = useState(Array.from('clock'))
   const [start, setStart] = useState(false)
+  const [solved, setSolved] = useState(false)
   let { current: currentRow } = useRef(1)
+
   const {
     start: startStopwatch,
     stop,
     stopWatchProps,
   } = useStopwatch({ fontSize: '2rem', display: 'flex', alignItems: 'center' })
+  const { width, height } = useWindowSize()
 
   const submitHandler = async () => {
     if (currentRow < 7) {
@@ -30,7 +35,6 @@ function App() {
       )
         .join('')
         .toLowerCase()
-
       const body = JSON.stringify({ answer: word, attempts: currentRow })
       const response = await fetch('http://localhost:4000/api/attempts', {
         body: body,
@@ -40,21 +44,20 @@ function App() {
         },
       })
       const result: TAttempt = await response.json()
-
       const rows = Array.from(
         document.querySelectorAll(`#row-${currentRow}`),
       ) as HTMLInputElement[]
-
       rows.forEach((el, index) => {
         const rowData = result.data[index]
-
+        console.log(rowData)
         el.value = rowData.letter
         el.style.transition = 'all 1s'
         el.style.background = rowData.bg
       })
-
       // render confetti and toast
       if (result.solved) {
+        stop()
+
         toast(
           `Yay 🎉 Successfully solved Bubba challenge in ${currentRow} ${
             currentRow === 1 ? 'try' : 'tries'
@@ -62,7 +65,7 @@ function App() {
           {
             position: 'top-center',
             type: 'success',
-            autoClose: 5000,
+            autoClose: 8000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
@@ -70,6 +73,8 @@ function App() {
             progress: undefined,
           },
         )
+        setStart(false)
+        setSolved(true)
       }
       // increase the count of the row
       currentRow = currentRow + 1
@@ -83,7 +88,11 @@ function App() {
           {rows.map((_, rowIndex) => (
             <div className="rows" key={rowIndex}>
               {columns.map((_, columnIndex) => (
-                <ColumnItem key={columnIndex} currentRow={rowIndex + 1} />
+                <ColumnItem
+                  key={columnIndex}
+                  currentRow={rowIndex + 1}
+                  disabled={!start}
+                />
               ))}
             </div>
           ))}
@@ -113,8 +122,9 @@ function App() {
           <button onClick={submitHandler} className="button submit-button">
             Submit
           </button>
-          <StopWatch {...stopWatchProps} å />
+          <StopWatch {...stopWatchProps} />
         </div>
+        {solved && <Confetti width={width} height={height} />}
       </main>
       <ToastContainer />
     </>

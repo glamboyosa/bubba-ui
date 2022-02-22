@@ -1,14 +1,14 @@
-import styles from "./columnItem.module.css";
+import styles from './columnItem.module.css'
 type ColumnItemProps = {
-  currentRow: number;
-  properties?: React.CSSProperties;
-};
-const ColumnItem = ({ currentRow, properties }: ColumnItemProps) => (
+  currentRow: number
+  disabled: boolean
+}
+const ColumnItem = ({ currentRow, disabled }: ColumnItemProps) => (
   <input
     className={styles.input}
-    style={{ ...properties }}
     type="text"
     id={`row-${currentRow}`}
+    disabled={disabled}
   />
-);
-export default ColumnItem;
+)
+export default ColumnItem
