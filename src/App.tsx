@@ -28,76 +28,91 @@ function App() {
   const { width, height } = useWindowSize()
 
   const submitHandler = async () => {
-    if (currentRow < 7) {
-      const word = Array.from(
-        document.querySelectorAll(`#row-${currentRow}`) as any,
-        (el: HTMLInputElement) => el.value,
-      )
-        .join('')
-        .toLowerCase()
-      const body = JSON.stringify({ answer: word, attempts: currentRow })
-      const response = await fetch(
-        process.env.NODE_ENV !== 'development'
-          ? 'http://localhost:4000/api/attempts'
-          : 'https://polished-flower-743.fly.dev/api/attempts',
-        {
-          body: body,
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-      )
-      const result: TAttempt = await response.json()
-      const rows = Array.from(
-        document.querySelectorAll(`#row-${currentRow}`),
-      ) as HTMLInputElement[]
-      rows.forEach((el, index) => {
-        const rowData = result.data[index]
-
-        el.value = rowData.letter
-        el.style.transition = 'all 1s'
-        el.style.background = rowData.bg
-      })
-      // render confetti and toast
-      if (result.solved) {
-        stop()
-
-        toast(
-          `Yay 🎉 Successfully solved Bubba challenge in ${currentRow} ${
-            currentRow === 1 ? 'try' : 'tries'
-          }`,
+    try {
+      if (currentRow < 7) {
+        const word = Array.from(
+          document.querySelectorAll(`#row-${currentRow}`) as any,
+          (el: HTMLInputElement) => el.value,
+        )
+          .join('')
+          .toLowerCase()
+        const body = JSON.stringify({ answer: word, attempts: currentRow })
+        const response = await fetch(
+          process.env.NODE_ENV === 'development'
+            ? 'http://localhost:4000/api/attempts'
+            : 'https://polished-flower-743.fly.dev/api/attempts',
           {
-            position: 'top-center',
-            type: 'success',
-            autoClose: 8000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
+            body: body,
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
           },
         )
-        setStart(false)
-        setSolved(true)
-      } else if (!result.solved && result.attempts === 6) {
-        setStart(false)
-        stop()
-        toast(
-          `Couldn't solve Bubba challenge. The word for today was ${result.answer}`,
-          {
-            position: 'top-center',
-            type: 'error',
-            autoClose: 8000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          },
-        )
+        const result: TAttempt = await response.json()
+        const rows = Array.from(
+          document.querySelectorAll(`#row-${currentRow}`),
+        ) as HTMLInputElement[]
+        rows.forEach((el, index) => {
+          const rowData = result.data[index]
+
+          el.value = rowData.letter
+          el.style.transition = 'all 1s'
+          el.style.background = rowData.bg
+        })
+        // render confetti and toast
+        if (result.solved) {
+          stop()
+
+          toast(
+            `Yay 🎉 Successfully solved Bubba challenge in ${currentRow} ${
+              currentRow === 1 ? 'try' : 'tries'
+            }`,
+            {
+              position: 'top-center',
+              type: 'success',
+              autoClose: 8000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            },
+          )
+          setStart(false)
+          setSolved(true)
+        } else if (!result.solved && result.attempts === 6) {
+          setStart(false)
+          stop()
+          toast(
+            `Couldn't solve Bubba challenge. The word for today was ${result.answer}`,
+            {
+              position: 'top-center',
+              type: 'error',
+              autoClose: 8000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            },
+          )
+        }
+
+        // increase the count of the row
+        currentRow = currentRow + 1
       }
-
+    } catch (e) {
+      toast(`Hint 😉 That is WAY off the right word. Try something else.`, {
+        position: 'top-center',
+        type: 'info',
+        autoClose: 8000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      })
       // increase the count of the row
       currentRow = currentRow + 1
     }
