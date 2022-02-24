@@ -38,6 +38,10 @@
     position: sticky;
     top: 2px;
   }
+  .modalHidden {
+    transform: translateX(100%);
+    display: none;
+  }
   /* .modalAlert {
     margin-left: 10rem;
   } */
