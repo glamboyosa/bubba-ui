@@ -41,7 +41,7 @@ function App() {
         const response = await fetch(
           process.env.NODE_ENV === 'development'
             ? 'http://localhost:4000/api/attempts'
-            : 'https://polished-flower-743.fly.dev/api/attempts',
+            : 'https://bubba-server.herokuapp.com/api/attempts',
           {
             body: body,
             method: 'POST',
