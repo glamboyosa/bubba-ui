@@ -119,6 +119,7 @@ function App() {
       setCurrentRow((prevValue) => prevValue + 1)
     }
   }
+
   useEffect(() => {
     const interval = setInterval(() => {
       const rows = Array.from(
@@ -133,6 +134,7 @@ function App() {
     }, 0.5)
     return () => clearInterval(interval)
   }, [currentRow])
+  // useEffect for waking up sleeping dynos
   useEffect(() => {
     fetch(baseURL)
       .then((resp) => resp.text())
