@@ -7,7 +7,7 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  min-height: 120vh;
+  height: 120vh;
   background-color: white;
   transition: all 0.2s;
 }
@@ -32,4 +32,13 @@
   display: flex;
   justify-content: center;
   flex-direction: column;
+}
+@media only screen and (max-width: 700px) {
+  .modalBackdrop {
+    display: block;
+    text-align: center;
+  }
+  .modalAlert {
+    margin-left: 10rem;
+  }
 }
