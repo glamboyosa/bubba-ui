@@ -20,7 +20,7 @@ function App() {
   const [columns] = useState(Array.from('clock'))
   const [start, setStart] = useState(false)
   const [solved, setSolved] = useState(false)
-  let { current: currentRow } = useRef(1)
+  const [currentRow, setCurrentRow] = useState(1)
   const {
     start: startStopwatch,
     stop,
@@ -101,7 +101,7 @@ function App() {
         }
 
         // increase the count of the row
-        currentRow = currentRow + 1
+        setCurrentRow((prevValue) => prevValue + 1)
       }
     } catch (e) {
       toast(`Hint 😉 That is WAY off the right word. Try something else.`, {
@@ -115,19 +115,24 @@ function App() {
         progress: undefined,
       })
       // increase the count of the row
-      currentRow = currentRow + 1
+      setCurrentRow((prevValue) => prevValue + 1)
     }
   }
   useEffect(() => {
-    const rows = Array.from(
-      document.querySelectorAll(`#row-${currentRow}`),
-    ) as HTMLInputElement[]
-    rows.forEach((el) => {
-      if (el.value.length > 1) {
-        el.value = el.value[0]
-      }
-    })
-  })
+    const interval = setInterval(() => {
+      const rows = Array.from(
+        document.querySelectorAll(`#row-${currentRow}`),
+      ) as HTMLInputElement[]
+      rows.forEach((el) => {
+        if (el.value.length > 1) {
+          console.log('?')
+          el.value = el.value[0]
+        }
+      })
+    }, 0.5)
+    return () => clearInterval(interval)
+  }, [currentRow])
+
   return (
     <>
       <GameRules />
