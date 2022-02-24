@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { StopWatch, useStopwatch } from '@glamboyosa/react-stopwatch'
@@ -118,6 +118,16 @@ function App() {
       currentRow = currentRow + 1
     }
   }
+  useEffect(() => {
+    const rows = Array.from(
+      document.querySelectorAll(`#row-${currentRow}`),
+    ) as HTMLInputElement[]
+    rows.forEach((el) => {
+      if (el.value.length > 1) {
+        el.value = el.value[0]
+      }
+    })
+  })
   return (
     <>
       <GameRules />
