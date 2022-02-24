@@ -82,7 +82,7 @@ function App() {
           )
           setStart(false)
           setSolved(true)
-        } else if (!result.solved && result.attempts === 6) {
+        } else if (!result.solved && result.attempts === 3) {
           setStart(false)
           stop()
           toast(
