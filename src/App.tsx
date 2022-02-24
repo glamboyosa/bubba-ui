@@ -8,6 +8,7 @@ import Confetti from 'react-confetti'
 import './App.css'
 import Header from './components/Header'
 import ColumnItem from './components/ColumnItem'
+import GameRules from './components/GameRules'
 type TAttempt = {
   solved: boolean
   attempts: number
@@ -119,6 +120,7 @@ function App() {
   }
   return (
     <>
+      <GameRules />
       <Header />
       <main className="main">
         <div className="container">

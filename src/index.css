@@ -1,11 +1,12 @@
-@import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;500&family=Kalam&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;500&family=Kalam&display=swap');
 :root {
   --white-shade: #fafafa;
   --white: #ffffff;
   --black: #000000;
   --base: #121212;
   --green: #00ff00;
-  --dark-green: #006400;
+  --dark-green: #0d9787;
+  --blue: #66afe9;
 }
 *,
 *::before,
@@ -19,7 +20,7 @@ html {
 }
 body {
   box-sizing: border-box;
-  font-family: "Kalam", cursive;
+  font-family: 'Kalam', cursive;
   color: var(--white-shade);
   background-color: var(--base);
 }
