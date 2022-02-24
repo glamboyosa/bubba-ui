@@ -16,7 +16,7 @@ type TAttempt = {
   data: { letter: string; bg: string }[]
 }
 function App() {
-  const [rows] = useState(Array.from('clothe'))
+  const [rows] = useState(Array.from('osa'))
   const [columns] = useState(Array.from('clock'))
   const [start, setStart] = useState(false)
   const [solved, setSolved] = useState(false)
@@ -30,7 +30,7 @@ function App() {
 
   const submitHandler = async () => {
     try {
-      if (currentRow < 7) {
+      if (currentRow < 4) {
         const word = Array.from(
           document.querySelectorAll(`#row-${currentRow}`) as any,
           (el: HTMLInputElement) => el.value,
