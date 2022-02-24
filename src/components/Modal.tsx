@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { useCallback } from 'react'
 import useModal from '../libs/hooks/useModal'
 import styles from './modal.module.css'
 import '../App.css'
@@ -10,15 +10,15 @@ const Modal = ({ children }: TModalProps) => {
   const modalRef = React.useRef<HTMLDivElement | null>(null!)
 
   const { showModal, setShowModal } = context
-  const keyDownHandler = () => {
+  const keyDownHandler = useCallback(() => {
     setShowModal(false)
-  }
+  }, [setShowModal])
   React.useEffect(() => {
     window.addEventListener('keydown', keyDownHandler)
 
     //   cleanup if we unmount
     return () => window.removeEventListener('keydown', keyDownHandler)
-  }, [])
+  }, [keyDownHandler])
   return (
     <div
       className={
