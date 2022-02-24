@@ -7,6 +7,7 @@ const ColumnItem = ({ currentRow, disabled }: ColumnItemProps) => (
   <input
     className={styles.input}
     type="text"
+    max={1}
     id={`row-${currentRow}`}
     disabled={disabled}
   />
