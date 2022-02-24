@@ -37,7 +37,7 @@
   .modalBackdrop {
     display: block;
     text-align: center;
-    height: 300vh;
+    height: auto;
   }
   .modalAlert {
     margin-left: 10rem;
