@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { StopWatch, useStopwatch } from '@glamboyosa/react-stopwatch'
@@ -21,6 +21,7 @@ function App() {
   const [start, setStart] = useState(false)
   const [solved, setSolved] = useState(false)
   const [currentRow, setCurrentRow] = useState(1)
+  const { current: baseURL } = useRef('https://bubba-server.herokuapp.com/')
   const {
     start: startStopwatch,
     stop,
@@ -41,7 +42,7 @@ function App() {
         const response = await fetch(
           process.env.NODE_ENV === 'development'
             ? 'http://localhost:4000/api/attempts'
-            : 'https://bubba-server.herokuapp.com/api/attempts',
+            : `${baseURL}api/attempts`,
           {
             body: body,
             method: 'POST',
@@ -132,7 +133,12 @@ function App() {
     }, 0.5)
     return () => clearInterval(interval)
   }, [currentRow])
-
+  useEffect(() => {
+    fetch(baseURL)
+      .then((resp) => resp.text())
+      .then((res) => console.log(res))
+      .catch()
+  }, [baseURL])
   return (
     <>
       <GameRules />
